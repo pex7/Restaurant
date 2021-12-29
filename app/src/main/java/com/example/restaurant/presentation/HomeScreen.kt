@@ -6,13 +6,15 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavController
+import com.example.restaurant.presentation.categories.components.CategoryList
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(navController: NavController) {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        Text(text = "Home")
+        CategoryList(navController)
     }
 }

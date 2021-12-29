@@ -20,7 +20,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 fun Navigation(navController: NavHostController) {
     NavHost(navController = navController, startDestination = "home") {
         composable("home") {
-            HomeScreen()
+            HomeScreen(navController)
         }
         composable("cart") {
             CartScreen()

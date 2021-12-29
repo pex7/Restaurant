@@ -1,5 +1,6 @@
 package com.example.restaurant.data.remote
 
+import com.example.restaurant.data.remote.dto.CategoriesDto
 import com.example.restaurant.data.remote.dto.MenuItemDto
 import retrofit2.http.GET
 
@@ -8,5 +9,5 @@ interface RestaurantApi {
     suspend fun getMenu(): List<MenuItemDto>
 
     @GET("/categories")
-    suspend fun getCategories(): List<String>
+    suspend fun getCategories(): CategoriesDto
 }

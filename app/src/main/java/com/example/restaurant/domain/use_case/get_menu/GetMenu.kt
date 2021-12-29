@@ -14,15 +14,15 @@ class GetMenu @Inject constructor(
 ) {
     operator fun invoke(): Flow<Resource<List<MenuItemDto>>> = flow {
         try {
-            emit(Resource.Loading())
+            emit(Resource.Loading<List<MenuItemDto>>())
 
             val menuItems = repository.getMenu()
 
-            emit(Resource.Success(menuItems))
+            emit(Resource.Success<List<MenuItemDto>>(menuItems))
         } catch (e: HttpException) {
-            emit(Resource.Error(e.localizedMessage ?: "An error occurred"))
+            emit(Resource.Error<List<MenuItemDto>>(e.localizedMessage ?: "An error occurred"))
         } catch (e: IOException) {
-            emit(Resource.Error("Could not connect to the server"))
+            emit(Resource.Error<List<MenuItemDto>>("Could not connect to the server"))
         }
     }
 }

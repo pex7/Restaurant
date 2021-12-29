@@ -35,9 +35,12 @@ fun Root() {
                         route = "orders",
                         icon = Icons.Default.Settings
                     )
-                ), navController = navController, onItemClick = {
-                    navController.navigate(it.route)
-                })
+                ),
+                    navController = navController,
+                    onItemClick = {
+                        navController.navigate(it.route)
+                    }
+                )
             }
         ) {
             Navigation(navController = navController)
