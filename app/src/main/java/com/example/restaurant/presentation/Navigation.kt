@@ -14,7 +14,9 @@ import com.example.restaurant.BottomNavItem
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavType
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.navArgument
 
 @Composable
 fun Navigation(navController: NavHostController) {
@@ -28,10 +30,16 @@ fun Navigation(navController: NavHostController) {
         composable("orders") {
             OrdersScreen()
         }
+        composable(
+            "menu/{category}",
+            arguments = listOf(navArgument("category") { type = NavType.StringType })
+        ) { backStackEntry ->
+            MenuScreen(backStackEntry.arguments?.getString("category"))
+        }
     }
 }
 
-@ExperimentalMaterialApi
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun BottomNavigationBar(
     items: List<BottomNavItem>,
@@ -57,7 +65,7 @@ fun BottomNavigationBar(
                 icon = {
                     Column(horizontalAlignment = CenterHorizontally) {
                         if (item.badgeCount > 0) {
-                            BadgeBox(badgeContent = {
+                            BadgedBox(badge = {
                                 Text(text = item.badgeCount.toString())
                             }) {
                                 Icon(imageVector = item.icon, contentDescription = item.name)

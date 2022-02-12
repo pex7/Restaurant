@@ -25,13 +25,13 @@ fun CategoryList(
     viewModel: CategoriesViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.value
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(modifier = Modifier.fillMaxSize().padding(top = 8.dp)) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             items(state.categories) { category ->
                 CategoryItem(
                     category = category,
                     onItemClick = {
-                        Log.d("Categories", "onClick works! $it")
+                        navController.navigate("menu/$category")
                     }
                 )
             }

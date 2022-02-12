@@ -11,7 +11,8 @@ import androidx.navigation.compose.rememberNavController
 import com.example.restaurant.BottomNavItem
 import com.example.restaurant.presentation.ui.theme.RestaurantTheme
 
-@ExperimentalMaterialApi
+
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun Root() {
     RestaurantTheme {

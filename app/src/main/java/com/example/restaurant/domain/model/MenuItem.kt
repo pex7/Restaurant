@@ -12,5 +12,5 @@ data class MenuItem(
     @Json(name = "image_url")
     val imageUrl: String,
     val name: String,
-    val price: Int
+    val price: Double
 )
