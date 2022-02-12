@@ -4,6 +4,7 @@ import com.example.restaurant.common.Constants
 import com.example.restaurant.data.remote.RestaurantApi
 import com.example.restaurant.data.repository.RestaurantRepositoryImpl
 import com.example.restaurant.domain.repository.RestaurantRepository
+import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,9 +19,10 @@ object AppModule {
     @Provides
     @Singleton
     fun provideRestaurantApi(): RestaurantApi {
+        val moshi: Moshi = Moshi.Builder().build()
         return Retrofit.Builder()
             .baseUrl(Constants.baseUrl)
-            .addConverterFactory(MoshiConverterFactory.create())
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
             .create(RestaurantApi::class.java)
     }

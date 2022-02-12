@@ -11,7 +11,8 @@ import androidx.navigation.compose.rememberNavController
 import com.example.restaurant.BottomNavItem
 import com.example.restaurant.presentation.ui.theme.RestaurantTheme
 
-@ExperimentalMaterialApi
+
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun Root() {
     RestaurantTheme {
@@ -35,9 +36,12 @@ fun Root() {
                         route = "orders",
                         icon = Icons.Default.Settings
                     )
-                ), navController = navController, onItemClick = {
-                    navController.navigate(it.route)
-                })
+                ),
+                    navController = navController,
+                    onItemClick = {
+                        navController.navigate(it.route)
+                    }
+                )
             }
         ) {
             Navigation(navController = navController)
