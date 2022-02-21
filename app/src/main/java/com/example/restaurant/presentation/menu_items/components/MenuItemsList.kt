@@ -49,5 +49,15 @@ fun MenuItemsList(
         if (state.isLoading) {
             CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
         }
+        if (!state.isLoading && state.menuItems.isEmpty()) {
+            Text(
+                text = "No menu items available",
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+                    .align(Alignment.Center)
+            )
+        }
     }
 }

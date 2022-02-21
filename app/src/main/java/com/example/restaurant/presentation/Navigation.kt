@@ -66,7 +66,7 @@ fun BottomNavigationBar(
                     Column(horizontalAlignment = CenterHorizontally) {
                         if (item.badgeCount > 0) {
                             BadgedBox(badge = {
-                                Text(text = item.badgeCount.toString())
+                                Badge { Text(item.badgeCount.toString()) }
                             }) {
                                 Icon(imageVector = item.icon, contentDescription = item.name)
                             }
