@@ -26,8 +26,7 @@ import com.example.restaurant.domain.model.MenuItem
 fun MenuItem(
     menuItem: MenuItem,
 ) {
-    Log.d("menuItem", menuItem.imageUrl)
-
+    val localImageUrl = menuItem.imageUrl.replace("localhost", "10.0.2.2")
     val (orderCount, setOrderCount) = remember { mutableStateOf(0) }
 
     Card(
@@ -39,7 +38,7 @@ fun MenuItem(
     ) {
         Row(modifier = Modifier.padding(8.dp)) {
             Image(
-                painter = rememberImagePainter(R.drawable.chicken_noodle_soup),
+                painter = rememberImagePainter(localImageUrl),
                 contentDescription = "Item image",
                 modifier = Modifier.size(100.dp)
             )

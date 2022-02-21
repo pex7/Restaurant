@@ -7,14 +7,22 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.ViewModel
 import androidx.navigation.compose.rememberNavController
 import com.example.restaurant.BottomNavItem
+import com.example.restaurant.presentation.root.RootViewModel
 import com.example.restaurant.presentation.ui.theme.RestaurantTheme
+import dagger.hilt.android.lifecycle.HiltViewModel
 
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun Root() {
+fun Root(
+    viewModel: RootViewModel = hiltViewModel()
+) {
+    val state = viewModel.state.value
+
     RestaurantTheme {
         val navController = rememberNavController()
 
@@ -29,12 +37,8 @@ fun Root() {
                     BottomNavItem(
                         name = "Cart",
                         route = "cart",
-                        icon = Icons.Default.ShoppingCart
-                    ),
-                    BottomNavItem(
-                        name = "Orders",
-                        route = "orders",
-                        icon = Icons.Default.Settings
+                        icon = Icons.Default.ShoppingCart,
+                        badgeCount = state.cartQuantity
                     )
                 ),
                     navController = navController,
