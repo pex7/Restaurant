@@ -27,9 +27,6 @@ fun Navigation(navController: NavHostController) {
         composable("cart") {
             CartScreen()
         }
-        composable("orders") {
-            OrdersScreen()
-        }
         composable(
             "menu/{category}",
             arguments = listOf(navArgument("category") { type = NavType.StringType })
