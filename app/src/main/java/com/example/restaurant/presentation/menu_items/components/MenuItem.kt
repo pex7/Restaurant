@@ -10,6 +10,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AddCircle
 import androidx.compose.material.icons.outlined.RemoveCircle
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -18,16 +19,23 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberImagePainter
 import com.example.restaurant.R
 import com.example.restaurant.domain.model.MenuItem
+import com.example.restaurant.presentation.menu_items.MenuItemsViewModel
 
 @Composable
 fun MenuItem(
     menuItem: MenuItem,
+    viewModel: MenuItemsViewModel = hiltViewModel()
 ) {
-    val localImageUrl = menuItem.imageUrl.replace("localhost", "10.0.2.2")
     val (orderCount, setOrderCount) = remember { mutableStateOf(0) }
+    val itemQuantity = viewModel.cartItemQuantity.value
+
+    LaunchedEffect(itemQuantity) {
+        viewModel.getItemQuantity(menuItem)
+    }
 
     Card(
         modifier = Modifier
@@ -38,7 +46,7 @@ fun MenuItem(
     ) {
         Row(modifier = Modifier.padding(8.dp)) {
             Image(
-                painter = rememberImagePainter(localImageUrl),
+                painter = rememberImagePainter(menuItem.imageUrl),
                 contentDescription = "Item image",
                 modifier = Modifier.size(100.dp)
             )
@@ -71,11 +79,14 @@ fun MenuItem(
                             )
                         }
                         Text(
-                            text = orderCount.toString(),
+                            text = itemQuantity.toString(),
                             fontSize = 24.sp,
                             modifier = Modifier.padding(horizontal = 4.dp)
                         )
-                        IconButton(onClick = { setOrderCount(orderCount + 1) }) {
+                        IconButton(onClick = {
+//                            setOrderCount(orderCount + 1)
+                            viewModel.addItem(menuItem)
+                        }) {
                             Icon(
                                 imageVector = Icons.Outlined.AddCircle,
                                 contentDescription = "Add menu item",
