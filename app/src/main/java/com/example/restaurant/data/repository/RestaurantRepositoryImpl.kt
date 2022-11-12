@@ -1,72 +1,86 @@
 package com.example.restaurant.data.repository
 
-import android.util.Log
 import com.example.restaurant.data.remote.RestaurantApi
 import com.example.restaurant.data.remote.dto.CategoriesDto
-import com.example.restaurant.data.remote.dto.MenuItemDto
 import com.example.restaurant.domain.model.CartItem
-import com.example.restaurant.domain.model.CartItems
 import com.example.restaurant.domain.model.MenuItem
 import com.example.restaurant.domain.model.MenuItems
 import com.example.restaurant.domain.repository.RestaurantRepository
+import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 class RestaurantRepositoryImpl @Inject constructor(
     private val api: RestaurantApi
 ) : RestaurantRepository {
-    private val cartItems = mutableListOf<CartItem>(
-        CartItem(
-            quantity = 1,
-            item = MenuItem(
-                name = "Pizza",
-                price = 12.50,
-                detailText = "coool",
-                imageUrl = "",
-                id = 8,
-                category = "Salads"
-            )
-        )
-    )
+    private var _cartItems = MutableStateFlow(mutableListOf<CartItem>())
 
-    override fun getCartItems(): List<CartItem> {
+    private val cartItems = _cartItems.asStateFlow()
+
+    override suspend fun getCartItems(): Flow<List<CartItem>> {
         return cartItems
     }
 
-    override fun addToCart(menuItem: MenuItem) {
-        var newCartItem: CartItem? = null
+    override suspend fun incrementCartItem(menuItem: MenuItem) {
+        var newCartItems = mutableListOf<CartItem>()
+        var isNewCartItem = true
 
-        cartItems.forEach { cartItem ->
-            if (cartItem.item.name == menuItem.name) {
-                cartItem.quantity = cartItem.quantity + 1
+        cartItems.value.forEach { cartItem ->
+            if (cartItem.item.id == menuItem.id) {
+                isNewCartItem = false
+                newCartItems.add(
+                    CartItem(
+                        quantity = cartItem.quantity + 1,
+                        item = cartItem.item
+                    )
+                )
             } else {
-                newCartItem = CartItem(
+                newCartItems.add(cartItem)
+            }
+        }
+
+        if (isNewCartItem) {
+            newCartItems.add(
+                CartItem(
                     quantity = 1,
                     item = menuItem
                 )
-            }
+            )
         }
 
-        newCartItem?.let {
-            cartItems.add(it)
-        }
+        _cartItems.update { newCartItems }
     }
 
-    override fun removeFromCart(menuItem: MenuItem) {
-        var removeItemIndex = -1
+    override suspend fun decrementCartItem(menuItem: MenuItem) {
+        var newCartItems = mutableListOf<CartItem>()
 
-        cartItems.forEachIndexed { index, cartItem ->
-            if (cartItem.item.name == menuItem.name) {
+        cartItems.value.forEach { cartItem ->
+            if (cartItem.item.id == menuItem.id) {
                 if (cartItem.quantity > 1) {
-                    cartItem.quantity = cartItem.quantity - 1
-                } else {
-                    removeItemIndex = index
+                    newCartItems.add(
+                        CartItem(
+                            quantity = cartItem.quantity - 1,
+                            item = cartItem.item
+                        )
+                    )
                 }
+            } else {
+                newCartItems.add(cartItem)
             }
         }
 
-        if (removeItemIndex != -1) {
-            cartItems.removeAt(removeItemIndex)
+        _cartItems.update { newCartItems }
+    }
+
+    override suspend fun removeCartItem(menuItem: MenuItem) {
+        var newCartItems = mutableListOf<CartItem>()
+
+        cartItems.value.forEach { cartItem ->
+            if (cartItem.item.id != menuItem.id) {
+                newCartItems.add(cartItem)
+            }
         }
+
+        _cartItems.update { newCartItems }
     }
 
     override suspend fun getMenu(category: String): MenuItems {

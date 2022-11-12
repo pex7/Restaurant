@@ -11,9 +11,10 @@ import javax.inject.Inject
 class GetCartItemQuantity @Inject constructor(
     private val repository: RestaurantRepository
 ) {
-    operator fun invoke(menuItem: MenuItem): Flow<Int> = flow {
-        val cartItem: CartItem? = repository.getCartItems().find { it.item.id == menuItem.id }
-        Log.i("cartItem", cartItem.toString())
-        emit(cartItem?.quantity ?: 0)
-    }
+//    operator fun invoke(menuItem: MenuItem): Flow<Int> = flow {
+//        val cartItem: CartItem? = repository.getCartItems().find { it.item.id == menuItem.id }
+//        Log.i("cartItem", "menuItem: $menuItem")
+//        Log.i("cartItem", "cartItem: $cartItem")
+//        emit(cartItem?.quantity ?: 0)
+//    }
 }

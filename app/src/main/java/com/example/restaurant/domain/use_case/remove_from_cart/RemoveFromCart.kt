@@ -7,7 +7,7 @@ import javax.inject.Inject
 class RemoveFromCart @Inject constructor(
     private val repository: RestaurantRepository
 ) {
-    operator fun invoke(menuItem: MenuItem) {
-        repository.removeFromCart(menuItem)
-    }
+//    operator fun invoke(menuItem: MenuItem) {
+//        repository.removeFromCart(menuItem)
+//    }
 }

@@ -1,28 +1,24 @@
 package com.example.restaurant.presentation.menu_items.components
 
-import android.util.Log
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.outlined.AddCircle
+import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.RemoveCircle
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberImagePainter
-import com.example.restaurant.R
 import com.example.restaurant.domain.model.MenuItem
+import com.example.restaurant.presentation.menu_items.MenuItemsEvent
 import com.example.restaurant.presentation.menu_items.MenuItemsViewModel
 
 @Composable
@@ -30,12 +26,8 @@ fun MenuItem(
     menuItem: MenuItem,
     viewModel: MenuItemsViewModel = hiltViewModel()
 ) {
-    val (orderCount, setOrderCount) = remember { mutableStateOf(0) }
-    val itemQuantity = viewModel.cartItemQuantity.value
-
-    LaunchedEffect(itemQuantity) {
-        viewModel.getItemQuantity(menuItem)
-    }
+    val cartItems = viewModel.cartItems.collectAsState()
+    val cartItem = cartItems.value.find { it.item.id == menuItem.id }
 
     Card(
         modifier = Modifier
@@ -68,8 +60,8 @@ fun MenuItem(
                     )
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         IconButton(onClick = {
-                            if (orderCount > 0) {
-                                setOrderCount(orderCount - 1)
+                            if (cartItem?.quantity ?: 0 > 0) {
+                                viewModel.onEvent(MenuItemsEvent.OnDecrementItemCount(menuItem))
                             }
                         }) {
                             Icon(
@@ -79,13 +71,12 @@ fun MenuItem(
                             )
                         }
                         Text(
-                            text = itemQuantity.toString(),
+                            text = cartItem?.quantity?.toString() ?: "0",
                             fontSize = 24.sp,
                             modifier = Modifier.padding(horizontal = 4.dp)
                         )
                         IconButton(onClick = {
-//                            setOrderCount(orderCount + 1)
-                            viewModel.addItem(menuItem)
+                            viewModel.onEvent(MenuItemsEvent.OnIncrementItemCount(menuItem))
                         }) {
                             Icon(
                                 imageVector = Icons.Outlined.AddCircle,

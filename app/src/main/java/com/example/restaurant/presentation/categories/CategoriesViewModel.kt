@@ -26,7 +26,8 @@ class CategoriesViewModel @Inject constructor(
         getCategories().onEach { result ->
             when (result) {
                 is Resource.Success -> {
-                    _state.value = CategoriesListState(categories = result.data?.categories ?: emptyList())
+                    _state.value =
+                        CategoriesListState(categories = result.data?.categories ?: emptyList())
                 }
                 is Resource.Loading -> {
                     _state.value = CategoriesListState(isLoading = true)
