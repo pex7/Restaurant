@@ -4,6 +4,7 @@ import com.example.restaurant.data.remote.dto.CategoriesDto
 import com.example.restaurant.domain.model.CartItem
 import com.example.restaurant.domain.model.MenuItem
 import com.example.restaurant.domain.model.MenuItems
+import com.example.restaurant.domain.model.PreparationTime
 import kotlinx.coroutines.flow.Flow
 
 interface RestaurantRepository {
@@ -18,4 +19,8 @@ interface RestaurantRepository {
     suspend fun decrementCartItem(menuItem: MenuItem): Unit
 
     suspend fun removeCartItem(menuItem: MenuItem)
+
+    suspend fun clearCart()
+
+    suspend fun submitOrder(menuIds: List<Int>): PreparationTime
 }
