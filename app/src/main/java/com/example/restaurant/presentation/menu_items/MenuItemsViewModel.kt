@@ -50,19 +50,4 @@ class MenuItemsViewModel @Inject constructor(
             }
         }.launchIn(viewModelScope)
     }
-
-    fun onEvent(event: MenuItemsEvent) {
-        when (event) {
-            is MenuItemsEvent.OnIncrementItemCount -> {
-                viewModelScope.launch {
-                    repository.incrementCartItem(event.menuItem)
-                }
-            }
-            is MenuItemsEvent.OnDecrementItemCount -> {
-                viewModelScope.launch {
-                    repository.decrementCartItem(event.menuItem)
-                }
-            }
-        }
-    }
 }

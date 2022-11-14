@@ -9,7 +9,6 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.outlined.RemoveCircle
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -17,10 +16,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberImagePainter
 import com.example.restaurant.domain.model.CartItem
-import com.example.restaurant.presentation.cart.CartItemEvent
+import com.example.restaurant.presentation.cart.CartEvent
 import com.example.restaurant.presentation.cart.CartViewModel
 
 @Composable
@@ -35,11 +33,11 @@ fun CartItem(
         shape = RoundedCornerShape(4.dp),
         elevation = 4.dp
     ) {
-        Row(modifier = Modifier.padding(8.dp)) {
+        Row(modifier = Modifier.padding(8.dp), verticalAlignment = Alignment.CenterVertically) {
             Image(
                 painter = rememberImagePainter(cartItem.item.imageUrl),
                 contentDescription = "Item image",
-                modifier = Modifier.size(50.dp)
+                modifier = Modifier.size(60.dp)
             )
             Column(modifier = Modifier.padding(horizontal = 8.dp)) {
                 Row() {
@@ -50,7 +48,7 @@ fun CartItem(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    IconButton(onClick = { viewModel.onEvent(CartItemEvent.OnRemoveItem(cartItem.item)) }) {
+                    IconButton(onClick = { viewModel.onEvent(CartEvent.OnRemoveItem(cartItem.item)) }) {
                         Icon(
                             imageVector = Icons.Default.Delete,
                             contentDescription = "Remove menu item",

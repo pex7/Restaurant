@@ -5,6 +5,7 @@ import com.example.restaurant.data.remote.dto.CategoriesDto
 import com.example.restaurant.domain.model.CartItem
 import com.example.restaurant.domain.model.MenuItem
 import com.example.restaurant.domain.model.MenuItems
+import com.example.restaurant.domain.model.PreparationTime
 import com.example.restaurant.domain.repository.RestaurantRepository
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
@@ -83,11 +84,19 @@ class RestaurantRepositoryImpl @Inject constructor(
         _cartItems.update { newCartItems }
     }
 
+    override suspend fun submitOrder(menuIds: List<Int>): PreparationTime {
+        return api.submitOrder(menuIds)
+    }
+
     override suspend fun getMenu(category: String): MenuItems {
         return api.getMenu(category)
     }
 
     override suspend fun getCategories(): CategoriesDto {
         return api.getCategories()
+    }
+
+    override suspend fun clearCart() {
+        _cartItems.update { mutableListOf() }
     }
 }

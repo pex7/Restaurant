@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.restaurant.domain.model.CartItem
-import com.example.restaurant.presentation.cart.CartItemEvent
+import com.example.restaurant.presentation.cart.CartEvent
 import com.example.restaurant.presentation.cart.CartViewModel
 
 @Composable
@@ -27,8 +27,8 @@ fun CartItemCounter(
 ) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         IconButton(onClick = {
-            if (cartItem?.quantity ?: 0 > 0) {
-                viewModel.onEvent(CartItemEvent.OnDecrementItemCount(cartItem.item))
+            if (cartItem.quantity > 0) {
+                viewModel.onEvent(CartEvent.OnDecrementItemCount(cartItem.item))
             }
         }) {
             Icon(
@@ -38,12 +38,12 @@ fun CartItemCounter(
             )
         }
         Text(
-            text = cartItem?.quantity?.toString() ?: "0",
+            text = cartItem.quantity.toString() ?: "0",
             fontSize = 24.sp,
             modifier = Modifier.padding(horizontal = 4.dp)
         )
         IconButton(onClick = {
-            viewModel.onEvent(CartItemEvent.OnIncrementItemCount(cartItem.item))
+            viewModel.onEvent(CartEvent.OnIncrementItemCount(cartItem.item))
         }) {
             Icon(
                 imageVector = Icons.Outlined.AddCircle,
